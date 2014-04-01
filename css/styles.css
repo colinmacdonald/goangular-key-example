@@ -2,7 +2,96 @@ body {
   .background-color: #dddddd;
 }
 
-img {
-  width: 200px;
-  height: 200px;
+.input {
+  width: 100%;
+  margin-bottom: 15px;
+  padding: 5px;
+  line-height: 20px;
+}
+
+.input.question-title {
+  height: 40px;
+}
+
+.input.question-body {
+  height: 110px;
+  resize: none;
+}
+
+.submit {
+  width: 150px;
+}
+
+.input.new-comment {
+  height: 30px;
+  width: 50%;
+}
+
+.submit.post {
+  margin-left: 10px;
+  height: 30px;
+  vertical-align: top;
+}
+
+.comments-header {
+  display: inline-block;
+}
+
+.comment-text {
+  width: 80%;
+  display: inline-block;
+}
+
+.comment-edit {
+  width: 19%;
+  display: inline-block;
+  text-align: right;
+}
+
+.comment-edit a {
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.edit-box {
+  height: 20px;
+  width: 100%;
+  vertical-align: middle;
+}
+
+.notification {
+  background-color: #FFFA80;
+  margin-left: 10px;
+  padding: 5px 20px;
+}
+
+.list li:first-child {
+  border-top: 1px solid #cccccc;
+}
+
+.list li {
+  background-color: #f8f8f8;
+  border-bottom: 1px solid #cccccc;
+}
+
+.list li:nth-child(odd) {
+  background-color: #fefefe;
+}
+
+.questions li {
+  padding: 5px 15px;
+  font-size: 18px;
+}
+
+.comments {
+  margin-bottom: 30px;
+}
+
+.comments li {
+  padding: 5px;
+}
+
+.list-text {
+  margin: 0;
+  font-size: 14px;
 }

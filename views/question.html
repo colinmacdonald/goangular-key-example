@@ -1,0 +1,15 @@
+<div class="jumbotron">
+  <h3>{{questions[id].title}}</h3>
+  <p>{{questions[id].user}}</p>
+  <p>{{questions[id].body}}</p>
+</div>
+<div class="container">
+  <h4 class="comments-header">{{(comments | keyFilter).length}} Comments</h4>
+  <span class="notification" ng-show="notification">New Comment</span>
+  <div comments="comments" local-user="users.$local.id"></div>
+  <div>
+    <h4>New Comment</h4>
+    <input class="input new-comment" enter="comments.$post()" ng-model="newComment" />
+    <button class="submit post" ng-click="comments.$post()">Post!</button>
+  </div>
+</div>

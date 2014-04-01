@@ -1,0 +1,8 @@
+<span class="comment-text">
+  <input type="text" class="edit-box" enter="edit(comment.$name)" ng-hide="editButton === 'Edit'" ng-model="editText" />
+  <span ng-hide="editButton === 'Submit'">{{comment.body}} - {{comment.user}}</span>
+</span>
+<span class="comment-edit" ng-show="comment.userId === localUser">
+  <a ng-click="edit(comment.$name)">{{editButton}}</a>
+  <a ng-click="remove(comment.$name)">Remove</a>
+</span>

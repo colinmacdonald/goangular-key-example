@@ -1,14 +1,14 @@
 {
-  "name": "goangular-auth-example",
+  "name": "goangular-key-example",
   "version": "1.0.0",
-  "description": "An example app using GoAngular to define routes with access permissions based on the connected GoInstant user.",
+  "description": "An example app using GoAngular's $goKey and keyFilter features.",
   "main": "index.html",
   "scripts": {
     "start": "harp server"
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/colinmacdonald/goangular-auth-example.git"
+    "url": "git://github.com/colinmacdonald/goangular-key-example.git"
   },
   "keywords": [
     "goangular",
@@ -18,9 +18,9 @@
   "author": "Colin MacDonald",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/colinmacdonald/goangular-auth-example/issues"
+    "url": "https://github.com/colinmacdonald/goangular-key-example/issues"
   },
-  "homepage": "https://github.com/colinmacdonald/goangular-auth-example",
+  "homepage": "https://github.com/colinmacdonald/goangular-key-example",
   "dependencies": {
     "harp": "0.11.2"
   }

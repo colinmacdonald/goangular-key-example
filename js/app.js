@@ -1,127 +1,181 @@
 /* jshint browser: true */
 /* global angular */
 
-/**
- * @fileOverview
- *
- * This file contains an example, only designed for use during development
- */
-
-'use strict';
-
-// Create an AngularJS application module
-var app = angular.module('auth', ['ngRoute', 'goangular']);
+var app = angular.module('keyExample', ['ngRoute', 'goangular']);
 
 app.config(['$routeProvider', '$goConnectionProvider',
   function($routeProvider, $goConnectionProvider) {
     var url = window.connectUrl || 'YOUR_CONNECT_URL';
-    var origin = window.location.origin;
-    var path = window.location.pathname;
-    var returnTo = origin + path;
 
     $goConnectionProvider.$set(url);
-    $goConnectionProvider.$loginUrl(['GitHub', 'Twitter', 'Facebook']);
-
-    $goConnectionProvider.$logoutUrl(returnTo);
 
     $routeProvider
-      .when('/', {
-        templateUrl: 'views/home.html',
-        controller: 'homeCtrl'
+      .when('/recent', {
+        templateUrl: 'views/recent.html',
+        controller: 'recentCtrl'
       })
-      .when('/profile', {
-        templateUrl: 'views/profile.html',
-        controller: 'profileCtrl',
-        access: 'authenticated'
+      .when('/ask', {
+        templateUrl: 'views/ask.html',
+        controller: 'askCtrl'
       })
-      .when('/restricted', {
-        templateUrl: 'views/restricted.html',
-        controller: 'restrictedCtrl'
+      .when('/question/:id', {
+        templateUrl: 'views/question.html',
+        controller: 'questionCtrl'
+      })
+      .when('/search', {
+        templateUrl: 'views/search.html',
+        controller: 'searchCtrl'
       })
       .otherwise({
-        redirectTo: '/'
+        redirectTo: '/recent'
       });
   }
 ]);
 
-app.factory('permissions', function ($goConnection) {
-    return {
-      authorized: function(accessLevel) {
-        var permission;
+app.controller('mainCtrl', function($scope, $goKey, $goUsers) {
+  $scope.questions = $goKey('questions').$sync();
 
-        switch ($goConnection.isGuest) {
-          case true:
-            permission = 'guest';
-            break;
-          case false:
-            permission = 'authenticated';
-            break;
-          default:
-            permission = null;
-        }
-
-        if (permission === accessLevel) {
-          return true;
-        }
-
-        return false;
-      }
-   };
+  $scope.users = $goUsers();
+  $scope.users.$self();
 });
 
-app.controller('mainCtrl',
-  function($scope, $route, $location, $goConnection, $goUsers, permissions) {
-    $scope.conn = $goConnection;
-    $scope.users = $goUsers();
-    $scope.users.$self();
+app.controller('recentCtrl', function($scope) {
+  $scope.title = 'Recent Questions';
+});
 
-    $goConnection.$ready().then(function() {
-      $scope.$on('$routeChangeStart', routeAuthorized);
+app.controller('askCtrl', function($scope, $location, $timeout) {
+  $scope.title = 'Ask a Question';
 
-      function routeAuthorized(scope, next) {
-        var route = next || $route.current;
-        var accessLevel = route.access;
+  $scope.ask = function() {
+    $scope.buttonText = 'Loading...';
 
-        if (accessLevel && !permissions.authorized(accessLevel)) {
-          $location.path('/restricted');
-        }
-      }
+    var question = {
+      title: $scope.questionTitle,
+      body: $scope.questionBody,
+      user: $scope.users.$local.displayName
+    };
 
-      routeAuthorized();
+    $scope.questionTitle = '';
+    $scope.questionBody = '';
+
+    $scope.questions.$add(question).then(function(result) {
+      var id = result.context.addedKey.split('/').pop();
+
+      $timeout(function() {
+        $location.path('/question/' + id);
+        $scope.buttonText = 'Ask!';
+      }, 500);
     });
-  }
-);
-
-app.controller('homeCtrl', function($scope) {
-  $scope.title = 'Home';
+  };
 });
 
-app.controller('profileCtrl', function($scope) {
-  $scope.title = 'Profile';
+app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) {
+  $scope.id = $routeParams.id;
+
+  $scope.comments = $goKey('comments').$key($scope.id).$sync();
+
+  $scope.comments.$post = function() {
+    var comment = {
+      body: $scope.newComment,
+      user: $scope.users.$local.displayName,
+      userId: $scope.users.$local.id
+    };
+
+    $scope.comments.$add(comment).then(function() {
+      $scope.newComment = '';
+    });
+  };
+
+  $scope.comments.$edit = function(id) {
+    if ($scope.editButton === 'Edit') {
+      $scope.editButton = 'Submit';
+
+    } else {
+      var comment = $scope.comments[id].editText;
+      $scope.comments.$key(id).$key('body').$set(text);
+
+      $scope.editText = '';
+      $scope.editButton = 'Edit';
+    }
+  };
+
+  $scope.comments.$remove = function(id) {
+    $scope.comments.$key(id).$remove();
+  };
+
+  var timeoutId = null;
+
+  $scope.comments.$off('add');
+
+  $scope.comments.$on('add', { local: true }, function() {
+    $scope.notification = true;
+
+    $timeout.cancel(timeoutId);
+
+    timeoutId = $timeout(function() {
+      $scope.notification = false;
+      timeoutId = null;
+    }, 2000);
+  });
 });
 
-app.controller('restrictedCtrl', function($scope) {
-  $scope.title = 'Restricted';
+app.controller('searchCtrl', function($scope, $routeParams, $goKey) {
+  $scope.title = 'Search for a Question';
 });
 
-app.directive('access', function($goConnection, permissions) {
+app.directive('enter', function() {
   return {
     restrict: 'A',
-    link: function(scope, element, attrs) {
-      function authenticate() {
-        var accessLevel = attrs.access;
+    link: function($scope, element, attrs) {
+      element.bind('keydown', function(event) {
+        var key = (event.which) ? event.which : event.keyCode;
 
-        if (accessLevel && !permissions.authorized(accessLevel)) {
-          element.hide();
+        if (key !== 13) {
+          return;
+        }
+
+        $scope.$eval(attrs.enter);
+      });
+    }
+  };
+});
+
+app.directive('comments', function() {
+  return {
+    scope: {
+      comments: '=',
+      localUser: '=localUser'
+    },
+    restrict: 'A',
+    templateUrl: 'templates/comments.html'
+  };
+});
+
+app.directive('comment', function($goKey) {
+  return {
+    restrict: 'E',
+    templateUrl: 'templates/comment.html',
+    require: '^comments',
+    controller: function($scope) {
+      $scope.editButton = 'Edit';
+
+      $scope.edit = function(id) {
+        if ($scope.editButton === 'Edit') {
+          $scope.editButton = 'Submit';
 
         } else {
-          element.show();
-        }
-      }
+          var commentBody = $scope.comments.$key(id).$key('body');
 
-      $goConnection.$ready().then(function() {
-        authenticate();
-      });
+          commentBody.$set($scope.editText).then(function() {
+            $scope.editText = '';
+            $scope.editButton = 'Edit';
+          });
+        }
+      };
+
+      $scope.remove = function(id) {
+        $scope.comments.$key(id).$remove();
+      };
     }
   };
 });

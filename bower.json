@@ -1,11 +1,11 @@
 {
-  "name": "goangular-auth-example",
+  "name": "goangular-key-example",
   "version": "1.0.0",
-  "homepage": "https://github.com/colinmacdonald/goangular-auth-example",
+  "homepage": "https://github.com/colinmacdonald/goangular-key-example",
   "authors": [
     "Colin MacDonald <colin@goinstant.com>"
   ],
-  "description": "An example app using GoAngular to define routes with access permissions based on the connected GoInstant user.",
+  "description": "An example app using GoAngular's $goKey and keyFilter features.",
   "main": "index.html",
   "keywords": [
     "goangular",
