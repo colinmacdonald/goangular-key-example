@@ -1,0 +1,12 @@
+<h2>{{title}}</h2>
+
+<div class="col-sm-2 col-md-2">
+  <img ng-src="{{users.$local.avatarUrl}}" class="img-rounded img-responsive" />
+</div>
+<div class="col-sm-4 col-md-4">
+  <blockquote>
+    <p>{{users.$local.displayName}}</p>
+    <small><cite title="Source Title">{{users.$local.id}}</cite></small>
+    <small ng-show="users.$local.email"><cite title="Source Title">{{users.$local.email}}</cite></small>
+  </blockquote>
+</div>

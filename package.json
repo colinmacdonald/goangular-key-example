@@ -1,0 +1,27 @@
+{
+  "name": "goangular-auth-example",
+  "version": "1.0.0",
+  "description": "An example app using GoAngular to define routes with access permissions based on the connected GoInstant user.",
+  "main": "index.html",
+  "scripts": {
+    "start": "harp server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/colinmacdonald/goangular-auth-example.git"
+  },
+  "keywords": [
+    "goangular",
+    "goinstant",
+    "angular"
+  ],
+  "author": "Colin MacDonald",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/colinmacdonald/goangular-auth-example/issues"
+  },
+  "homepage": "https://github.com/colinmacdonald/goangular-auth-example",
+  "dependencies": {
+    "harp": "0.11.2"
+  }
+}

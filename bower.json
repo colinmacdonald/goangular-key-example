@@ -1,0 +1,23 @@
+{
+  "name": "goangular-auth-example",
+  "version": "1.0.0",
+  "homepage": "https://github.com/colinmacdonald/goangular-auth-example",
+  "authors": [
+    "Colin MacDonald <colin@goinstant.com>"
+  ],
+  "description": "An example app using GoAngular to define routes with access permissions based on the connected GoInstant user.",
+  "main": "index.html",
+  "keywords": [
+    "goangular",
+    "angular",
+    "goinstant"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "2.1.0",
+    "angular": "v1.2.15",
+    "angular-route": "v1.2.15",
+    "goangular": "v3.3.0",
+    "bootstrap": "3.0.0"
+  }
+}
