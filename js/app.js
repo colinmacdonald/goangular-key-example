@@ -105,8 +105,6 @@ app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) 
 
   var timeoutId = null;
 
-  $scope.comments.$off('add');
-
   $scope.comments.$on('add', { local: true }, function() {
     $scope.notification = true;
 
@@ -116,6 +114,10 @@ app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) 
       $scope.notification = false;
       timeoutId = null;
     }, 2000);
+  });
+
+  $scope.$on('$destroy', function() {
+    $scope.comments.$off();
   });
 });
 
