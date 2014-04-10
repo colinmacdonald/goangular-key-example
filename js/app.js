@@ -86,24 +86,6 @@ app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) 
     });
   };
 
-  $scope.comments.$edit = function(id) {
-    if ($scope.editButton === 'Edit') {
-      $scope.editButton = 'Submit';
-
-    } else {
-      var comment = $scope.comments[id].editText;
-      $scope.comments.$key(id).$key('body').$set(text).then(function() {
-
-        $scope.editText = '';
-        $scope.editButton = 'Edit';
-      });
-    }
-  };
-
-  $scope.comments.$remove = function(id) {
-    $scope.comments.$key(id).$remove();
-  };
-
   var timeoutId = null;
 
   $scope.comments.$on('add', { local: true }, function() {
@@ -162,7 +144,7 @@ app.directive('comment', function($goKey) {
     controller: function($scope) {
       $scope.editButton = 'Edit';
 
-      $scope.edit = function(id) {
+      $scope.comment.$edit = function(id) {
         if ($scope.editButton === 'Edit') {
           $scope.editButton = 'Submit';
 
@@ -176,7 +158,7 @@ app.directive('comment', function($goKey) {
         }
       };
 
-      $scope.remove = function(id) {
+      $scope.comment.$delete = function(id) {
         $scope.comments.$key(id).$remove();
       };
     }
