@@ -92,10 +92,11 @@ app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) 
 
     } else {
       var comment = $scope.comments[id].editText;
-      $scope.comments.$key(id).$key('body').$set(text);
+      $scope.comments.$key(id).$key('body').$set(text).then(function() {
 
-      $scope.editText = '';
-      $scope.editButton = 'Edit';
+        $scope.editText = '';
+        $scope.editButton = 'Edit';
+      });
     }
   };
 
