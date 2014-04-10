@@ -45,6 +45,7 @@ app.controller('recentCtrl', function($scope) {
 
 app.controller('askCtrl', function($scope, $location, $timeout) {
   $scope.title = 'Ask a Question';
+  $scope.buttonText = 'Ask!';
 
   $scope.ask = function() {
     $scope.buttonText = 'Loading...';
