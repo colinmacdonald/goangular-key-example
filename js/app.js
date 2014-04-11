@@ -45,6 +45,7 @@ app.controller('recentCtrl', function($scope) {
 
 app.controller('askCtrl', function($scope, $location, $timeout) {
   $scope.title = 'Ask a Question';
+  $scope.buttonText = 'Ask!';
 
   $scope.ask = function() {
     $scope.buttonText = 'Loading...';
@@ -86,26 +87,7 @@ app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) 
     });
   };
 
-  $scope.comments.$edit = function(id) {
-    if ($scope.editButton === 'Edit') {
-      $scope.editButton = 'Submit';
-
-    } else {
-      var comment = $scope.comments[id].editText;
-      $scope.comments.$key(id).$key('body').$set(text);
-
-      $scope.editText = '';
-      $scope.editButton = 'Edit';
-    }
-  };
-
-  $scope.comments.$remove = function(id) {
-    $scope.comments.$key(id).$remove();
-  };
-
   var timeoutId = null;
-
-  $scope.comments.$off('add');
 
   $scope.comments.$on('add', { local: true }, function() {
     $scope.notification = true;
@@ -116,6 +98,10 @@ app.controller('questionCtrl', function($scope, $routeParams, $timeout, $goKey) 
       $scope.notification = false;
       timeoutId = null;
     }, 2000);
+  });
+
+  $scope.$on('$destroy', function() {
+    $scope.comments.$off();
   });
 });
 
@@ -159,7 +145,7 @@ app.directive('comment', function($goKey) {
     controller: function($scope) {
       $scope.editButton = 'Edit';
 
-      $scope.edit = function(id) {
+      $scope.comment.$edit = function(id) {
         if ($scope.editButton === 'Edit') {
           $scope.editButton = 'Submit';
 
@@ -173,7 +159,7 @@ app.directive('comment', function($goKey) {
         }
       };
 
-      $scope.remove = function(id) {
+      $scope.comment.$delete = function(id) {
         $scope.comments.$key(id).$remove();
       };
     }

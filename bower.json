@@ -17,7 +17,7 @@
     "jquery": "2.1.0",
     "angular": "v1.2.15",
     "angular-route": "v1.2.15",
-    "goangular": "v3.3.0",
+    "goangular": "v3.3.5",
     "bootstrap": "3.0.0"
   }
 }
