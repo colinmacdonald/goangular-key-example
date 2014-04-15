@@ -1,10 +1,11 @@
 {
   "name": "goangular-key-example",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "An example app using GoAngular's $goKey and keyFilter features.",
   "main": "index.html",
   "scripts": {
-    "start": "harp server"
+    "start": "node server.js",
+    "postinstall": "node_modules/bower/bin/bower install"
   },
   "repository": {
     "type": "git",
@@ -22,6 +23,8 @@
   },
   "homepage": "https://github.com/colinmacdonald/goangular-key-example",
   "dependencies": {
-    "harp": "0.11.2"
+    "express": "~3.4.8",
+    "ejs": "",
+    "bower": "1.3.2"
   }
 }

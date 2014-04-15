@@ -1,36 +1,40 @@
 /* jshint browser: true */
 /* global angular */
 
+'use strict';
+
 var app = angular.module('keyExample', ['ngRoute', 'goangular']);
 
-app.config(['$routeProvider', '$goConnectionProvider',
-  function($routeProvider, $goConnectionProvider) {
-    var url = window.connectUrl || 'YOUR_CONNECT_URL';
+app.config(
+  function($routeProvider, $locationProvider, $goConnectionProvider) {
+    $locationProvider.html5Mode(true).hashPrefix('!');
+
+    var url = window.connectUrl;
 
     $goConnectionProvider.$set(url);
 
     $routeProvider
       .when('/recent', {
-        templateUrl: 'views/recent.html',
+        templateUrl: 'templates/recent.html',
         controller: 'recentCtrl'
       })
       .when('/ask', {
-        templateUrl: 'views/ask.html',
+        templateUrl: 'templates/ask.html',
         controller: 'askCtrl'
       })
       .when('/question/:id', {
-        templateUrl: 'views/question.html',
+        templateUrl: 'templates/question.html',
         controller: 'questionCtrl'
       })
       .when('/search', {
-        templateUrl: 'views/search.html',
+        templateUrl: 'templates/search.html',
         controller: 'searchCtrl'
       })
       .otherwise({
         redirectTo: '/recent'
       });
   }
-]);
+);
 
 app.controller('mainCtrl', function($scope, $goKey, $goUsers) {
   $scope.questions = $goKey('questions').$sync();
@@ -133,14 +137,14 @@ app.directive('comments', function() {
       localUser: '=localUser'
     },
     restrict: 'A',
-    templateUrl: 'templates/comments.html'
+    templateUrl: 'templates/directives/comments.html'
   };
 });
 
 app.directive('comment', function($goKey) {
   return {
     restrict: 'E',
-    templateUrl: 'templates/comment.html',
+    templateUrl: 'templates/directives/comment.html',
     require: '^comments',
     controller: function($scope) {
       $scope.editButton = 'Edit';

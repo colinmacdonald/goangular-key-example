@@ -4,7 +4,7 @@
 </div>
 <ul class="list-unstyled list questions">
   <li ng-repeat="question in questions | keyFilter | filter:searchTerms | orderBy:'-$name' | limitTo:10">
-  <a href="#/question/{{question.$name}}">Q: {{question.title}}</a>
+  <a href="/question/{{question.$name}}">Q: {{question.title}}</a>
   <p class="list-text">{{question.body}}</p>
   </li>
 </ul>

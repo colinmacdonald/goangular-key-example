@@ -1,6 +1,5 @@
 node_modules
 bower_components
-config.js
 
 *.log
-config.js
+.env
